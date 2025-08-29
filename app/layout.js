@@ -1,10 +1,9 @@
-import { Akshar } from 'next/font/google'; // Import the font
+import { Akshar } from 'next/font/google';
 import './globals.css';
 
-// Configure the font
 const akshar = Akshar({ 
   subsets: ['latin'],
-  weight: ['400', '500', '700'], // Specify the weights you need
+  weight: ['400', '500', '700'],
 });
 
 export const metadata = {
@@ -15,7 +14,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      {/* Apply the font class to the body */}
       <body className={akshar.className}>{children}</body>
     </html>
   );

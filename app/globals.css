@@ -240,3 +240,337 @@ main {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2c5282;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* Admin Page Styles */
+.admin-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+.admin-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.admin-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+}
+.add-item-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.add-item-form input, .add-item-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.add-item-form button {
+  padding: 12px;
+  background-color: #2f855a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.admin-item-card {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+}
+/* Update admin item card to use flexbox */
+.admin-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.item-details {
+  flex-grow: 1;
+}
+
+.item-details p {
+  margin: 4px 0 0 0;
+  color: #555;
+}
+
+.delete-btn {
+  padding: 8px 12px;
+  background-color: #c53030; /* Red */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.item-actions {
+  display: flex;
+  gap: 8px; /* Adds space between buttons */
+}
+
+.edit-btn {
+  padding: 8px 12px;
+  background-color: #2b6cb0; /* Blue */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #718096; /* Gray */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+/* Styles for Category Titles */
+.category-section {
+  margin-bottom: 2rem;
+}
+
+.category-title {
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.category-title-admin {
+  font-size: 1.25rem;
+  color: #4A5568;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+/* Styles for Category Filter */
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 1rem;
+}
+
+.menu-header .title {
+  margin: 0;
+}
+
+.category-filter {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+/* === Landing Page Styles === */
+.landing-body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: #1a202c;
+  line-height: 1.6;
+}
+
+.landing-header nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landing-header span {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.cta-button-primary, .cta-button-secondary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.cta-button-primary {
+  background-color: #2c5282;
+  color: white;
+}
+.cta-button-primary:hover {
+  background-color: #2a4365;
+}
+
+.cta-button-secondary {
+  background-color: #edf2f7;
+  color: #2d3748;
+}
+.cta-button-secondary:hover {
+  background-color: #e2e8f0;
+}
+
+.landing-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero Section */
+.hero-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 4rem 0;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+.hero-image {
+  text-align: center;
+}
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* How It Works Section */
+.how-it-works-section {
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.how-it-works-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.step-card {
+  padding: 2rem;
+}
+.step-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.step-card p {
+  color: #4a5568;
+}
+
+/* Features Section */
+.features-section {
+  padding: 4rem 0;
+  text-align: center;
+}
+.features-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  text-align: left;
+}
+
+.feature-card {
+  background-color: #f7fafc;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+.feature-card p {
+  color: #4a5568;
+  margin: 0;
+}
+
+.landing-footer {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid #e2e8f0;
+  color: #718096;
+}

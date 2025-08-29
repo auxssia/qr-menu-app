@@ -3,16 +3,24 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Menu({ menuItems }) {
+export default function Menu({ menuItems, tableId }) {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('All'); // New state for the filter
   const router = useRouter();
 
-  // This is the function that was missing
+  // Get a unique list of categories from the menu items
+  const categories = ['All', ...new Set(menuItems.map(item => item.category))];
+
+  // Filter the items to be displayed based on the selected category
+  const filteredMenuItems = selectedCategory === 'All'
+    ? menuItems
+    : menuItems.filter(item => item.category === selectedCategory);
+
+  // ... (All other functions like handleUpdateCart, handlePlaceOrder, etc., remain exactly the same)
   const handleUpdateCart = (item, action) => {
     setCart(currentCart => {
       const itemIndex = currentCart.findIndex(cartItem => cartItem.id === item.id);
-
       if (action === 'add') {
         if (itemIndex > -1) {
           return currentCart.map(cartItem =>
@@ -24,11 +32,9 @@ export default function Menu({ menuItems }) {
           return [...currentCart, { ...item, quantity: 1 }];
         }
       }
-
       if (action === 'remove') {
         if (itemIndex > -1) {
-          const currentItem = currentCart[itemIndex];
-          if (currentItem.quantity > 1) {
+          if (currentCart[itemIndex].quantity > 1) {
             return currentCart.map(cartItem =>
               cartItem.id === item.id
                 ? { ...cartItem, quantity: cartItem.quantity - 1 }
@@ -49,11 +55,9 @@ export default function Menu({ menuItems }) {
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart: cart, tableId: 3 }),
+        body: JSON.stringify({ cart: cart, tableId: tableId }),
       });
-
       if (!response.ok) throw new Error('Failed to place order');
-      
       const data = await response.json();
       router.push(`/order/${data.orderId}`);
     } catch (error) {
@@ -73,7 +77,7 @@ export default function Menu({ menuItems }) {
   return (
     <main>
       <div className="cart-summary">
-        <h2>Your Order</h2>
+        <h2>You are at Table #{tableId}</h2>
         {cart.length === 0 ? <p>Your cart is empty.</p> : (
           <div>
             {cart.map(item => (
@@ -92,9 +96,23 @@ export default function Menu({ menuItems }) {
         )}
       </div>
 
-      <h1 className="title">Our Menu</h1>
+      <div className="menu-header">
+        <h1 className="title">Our Menu</h1>
+        {/* The new dropdown filter */}
+        <select 
+          className="category-filter"
+          value={selectedCategory} 
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categories.map(category => (
+            <option key={category} value={category}>{category}</option>
+          ))}
+        </select>
+      </div>
+      
+      {/* The menu grid now uses the filtered list of items */}
       <div className="menu-grid">
-        {menuItems.map((item) => {
+        {filteredMenuItems.map((item) => {
           const quantity = getItemQuantity(item.id);
           return (
             <div key={item.id} className="menu-card">

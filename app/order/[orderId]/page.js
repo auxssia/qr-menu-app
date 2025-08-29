@@ -1,17 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../lib/supabaseClient';
+import { createClient } from '../../../lib/supabaseClient'; // 1. Import the new function
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image'; // Import the Image component
+import Image from 'next/image';
 
 export default function OrderStatus() {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
+  const supabase = createClient(); // 2. Create the client instance
 
   useEffect(() => {
-    // ... (The data fetching logic remains exactly the same)
     const fetchOrder = async () => {
       if (!orderId) return;
       const { data } = await supabase
@@ -42,35 +42,31 @@ export default function OrderStatus() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [orderId]);
+  }, [orderId, supabase]);
 
   if (!order) {
     return (
-      <div className="status-container">
-        <h1>Loading Order...</h1>
-      </div>
+        <div className="status-container">
+            <h1>Loading Order...</h1>
+        </div>
     );
   }
 
   return (
     <div className="status-container">
-      {/* Add the Image from your public folder */}
       <Image
-        src="/order-confirmed.png" // The path to your image
+        src="/order-confirmed.png"
         alt="Order confirmation illustration"
-        width={280} // Specify width
-        height={203} // Specify height
-        priority // Helps load the image faster
+        width={280}
+        height={203}
+        priority
       />
-
       <h1 className="confirmation-title">Order Placed..!!</h1>
-
       <div className="order-details">
         <span>Unique Id: {order.id.substring(0, 8)}...</span>
         <br />
         <span>Order Status: {order.status}</span>
       </div>
-
       <Link href="/" className="order-more-btn">
         Order Again
       </Link>

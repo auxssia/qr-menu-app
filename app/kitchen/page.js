@@ -1,10 +1,23 @@
-import { supabase } from '../../lib/supabaseClient';
-import Dashboard from './Dashboard'; // Import our new component
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import Dashboard from './Dashboard';
 
 export const revalidate = 0;
 
 export default async function Kitchen() {
-  // Fetch the initial list of orders
+  const cookieStore = cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get(name) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
+
   const { data: initialOrders } = await supabase
     .from('orders')
     .select(`
@@ -20,8 +33,7 @@ export default async function Kitchen() {
   return (
     <div className="kitchen-container">
       <h1 className="kitchen-title">Kitchen Dashboard</h1>
-      {/* Pass the initial orders to the interactive Dashboard component */}
-      <Dashboard initialOrders={initialOrders} />
+      <Dashboard initialOrders={initialOrders || []} />
     </div>
   );
 }

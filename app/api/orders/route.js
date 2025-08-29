@@ -1,27 +1,39 @@
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { supabase } from '../../../lib/supabaseClient';
 
 export async function POST(request) {
+  const cookieStore = cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get(name) {
+          return cookieStore.get(name)?.value;
+        },
+      },
+    }
+  );
+
   try {
     const { cart, tableId } = await request.json();
+    const numericTableId = parseInt(tableId, 10);
 
-    // 1. Create a single order in the 'orders' table
     const { data: orderData, error: orderError } = await supabase
       .from('orders')
-      .insert({ table_id: tableId, status: 'pending' })
+      .insert({ table_id: numericTableId, status: 'pending' })
       .select()
       .single();
 
     if (orderError) throw orderError;
 
-    // 2. Prepare the items for the 'order_items' table from the cart array
-    const orderItems = cart.map(item => ({ // The fix is here: we now map the cart array directly
+    const orderItems = cart.map(item => ({
       order_id: orderData.id,
       menu_item_id: item.id,
       quantity: item.quantity,
     }));
 
-    // 3. Insert all items into the 'order_items' table
     const { error: itemsError } = await supabase
       .from('order_items')
       .insert(orderItems);
