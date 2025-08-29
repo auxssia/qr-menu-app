@@ -425,7 +425,7 @@ main {
   border: 1px solid #ccc;
   background-color: #fff;
 }
-/* === Landing Page Styles === */
+/* === Landing Page Styles (Mobile-First) === */
 .landing-body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: #ffffff;
@@ -436,7 +436,7 @@ main {
 .landing-header nav {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -444,15 +444,16 @@ main {
 
 .landing-header span {
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 .cta-button-primary, .cta-button-secondary {
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
   transition: background-color 0.2s ease-in-out;
+  font-size: 0.9rem;
 }
 
 .cta-button-primary {
@@ -474,61 +475,61 @@ main {
 .landing-main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 1.5rem;
 }
 
 /* Hero Section */
 .hero-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: center;
-  padding: 4rem 0;
+  display: flex; /* Changed from grid */
+  flex-direction: column; /* Stack vertically on mobile */
+  text-align: center;
+  padding: 2rem 0;
 }
 
 .hero-content h1 {
-  font-size: 3rem;
+  font-size: 2.5rem; /* Smaller for mobile */
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .hero-content p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #4a5568;
   margin-bottom: 2rem;
 }
 
 .hero-image {
-  text-align: center;
+  order: -1; /* Show image on top on mobile */
+  margin-bottom: 2rem;
 }
 .hero-image img {
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
 }
 
 /* How It Works Section */
 .how-it-works-section {
   text-align: center;
-  padding: 4rem 0;
+  padding: 3rem 0;
 }
 
 .how-it-works-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 .steps-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: 1fr; /* Single column on mobile */
+  gap: 1.5rem;
 }
 
 .step-card {
-  padding: 2rem;
+  padding: 1rem;
 }
 .step-card h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
 }
 .step-card p {
   color: #4a5568;
@@ -536,29 +537,29 @@ main {
 
 /* Features Section */
 .features-section {
-  padding: 4rem 0;
+  padding: 3rem 0;
   text-align: center;
 }
 .features-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
+  font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 .feature-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  grid-template-columns: 1fr; /* Single column on mobile */
+  gap: 1.5rem;
   text-align: left;
 }
 
 .feature-card {
   background-color: #f7fafc;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
 }
 .feature-card h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
@@ -573,4 +574,32 @@ main {
   margin-top: 2rem;
   border-top: 1px solid #e2e8f0;
   color: #718096;
+}
+
+/* --- MEDIA QUERY FOR TABLETS AND DESKTOPS --- */
+/* These styles will only apply if the screen is 768px or wider */
+@media (min-width: 768px) {
+  .hero-section {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    text-align: left;
+    padding: 4rem 0;
+  }
+  .hero-image {
+    order: 0; /* Put image back on the right */
+  }
+  .hero-image img {
+    max-width: 100%;
+  }
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+
+  .steps-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
