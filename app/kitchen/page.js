@@ -2,6 +2,8 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import Dashboard from './Dashboard';
 
+export const runtime = 'nodejs';
+
 export const revalidate = 0;
 
 export default async function Kitchen() {

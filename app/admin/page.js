@@ -2,6 +2,8 @@ import { createServerClient } from '@supabase/ssr'; // Import from the new, corr
 import { cookies } from 'next/headers';
 import MenuManager from './MenuManager';
 
+export const runtime = 'nodejs';
+
 export const revalidate = 0;
 
 export default async function Admin() {

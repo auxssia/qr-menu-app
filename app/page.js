@@ -61,7 +61,7 @@ export default function LandingPage() {
             </div>
             <div className="feature-card">
               <h3>📈 Built to Scale</h3>
-              <p>Start for free and add powerful features like online payments when you're ready to grow.</p>
+              <p>Start for free and add powerful features like online payments when you&apos;re ready to grow.</p>
             </div>
           </div>
         </section>
