@@ -1,20 +1,21 @@
-import { Akshar } from 'next/font/google';
+import { Inter } from 'next/font/google'; // Import the Inter font
 import './globals.css';
 
-const akshar = Akshar({ 
+// Configure the font with the weights you need
+const inter = Inter({ 
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700'], 
 });
 
 export const metadata = {
-  title: 'QR Restaurant Menu',
-  description: 'Order from your table.',
+  title: 'SwiftOrder', // Updated title
+  description: 'A modern QR ordering solution.',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={akshar.className}>{children}</body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

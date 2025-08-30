@@ -2,138 +2,91 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Cart from './Cart';
 
 export default function Menu({ menuItems, tableId }) {
   const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('All'); // New state for the filter
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const router = useRouter();
 
-  // Get a unique list of categories from the menu items
-  const categories = ['All', ...new Set(menuItems.map(item => item.category))];
+  const categories = ['All', ...new Set(menuItems.map(item => item.category).filter(Boolean))];
+  const filteredMenuItems = selectedCategory === 'All' ? menuItems : menuItems.filter(item => item.category === selectedCategory);
 
-  // Filter the items to be displayed based on the selected category
-  const filteredMenuItems = selectedCategory === 'All'
-    ? menuItems
-    : menuItems.filter(item => item.category === selectedCategory);
-
-  // ... (All other functions like handleUpdateCart, handlePlaceOrder, etc., remain exactly the same)
   const handleUpdateCart = (item, action) => {
     setCart(currentCart => {
       const itemIndex = currentCart.findIndex(cartItem => cartItem.id === item.id);
       if (action === 'add') {
         if (itemIndex > -1) {
-          return currentCart.map(cartItem =>
-            cartItem.id === item.id
-              ? { ...cartItem, quantity: cartItem.quantity + 1 }
-              : cartItem
-          );
-        } else {
-          return [...currentCart, { ...item, quantity: 1 }];
-        }
+          return currentCart.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c);
+        } else { return [...currentCart, { ...item, quantity: 1 }]; }
       }
       if (action === 'remove') {
         if (itemIndex > -1) {
           if (currentCart[itemIndex].quantity > 1) {
-            return currentCart.map(cartItem =>
-              cartItem.id === item.id
-                ? { ...cartItem, quantity: cartItem.quantity - 1 }
-                : cartItem
-            );
-          } else {
-            return currentCart.filter(cartItem => cartItem.id !== item.id);
-          }
+            return currentCart.map(c => c.id === item.id ? { ...c, quantity: c.quantity - 1 } : c);
+          } else { return currentCart.filter(c => c.id !== item.id); }
         }
       }
       return currentCart;
     });
   };
 
-  const handlePlaceOrder = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart: cart, tableId: tableId }),
-      });
-      if (!response.ok) throw new Error('Failed to place order');
-      const data = await response.json();
-      router.push(`/order/${data.orderId}`);
-    } catch (error) {
-      console.error(error);
-      alert('Error placing order. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+  const handleOrderSuccess = () => {
+    setCart([]);
+    setIsCartOpen(false);
   };
-
+  
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const getItemQuantity = (itemId) => {
-    const itemInCart = cart.find(item => item.id === itemId);
-    return itemInCart ? itemInCart.quantity : 0;
-  };
+  const getItemQuantity = (itemId) => cart.find(item => item.id === itemId)?.quantity || 0;
 
   return (
-    <main>
-      <div className="cart-summary">
-        <h2>You are at Table #{tableId}</h2>
-        {cart.length === 0 ? <p>Your cart is empty.</p> : (
-          <div>
-            {cart.map(item => (
-              <div key={item.id} className="cart-item">
-                <span>{item.name} (x{item.quantity})</span>
-                <div className="cart-item-actions">
-                  <span>₹{item.price * item.quantity}</span>
-                  <button onClick={() => handleUpdateCart(item, 'remove')} className="remove-item-btn">×</button>
-                </div>
-              </div>
-            ))}
-            <hr />
-            <div className="cart-total"><strong>Total</strong><strong>₹{totalPrice}</strong></div>
-            <button className="place-order-btn" onClick={handlePlaceOrder} disabled={loading || cart.length === 0}>{loading ? 'Placing...' : 'Place Order'}</button>
-          </div>
-        )}
-      </div>
-
-      <div className="menu-header">
-        <h1 className="title">Our Menu</h1>
-        {/* The new dropdown filter */}
-        <select 
-          className="category-filter"
-          value={selectedCategory} 
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          {categories.map(category => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
-      </div>
+    <div className="menu-page">
+      {isCartOpen && (
+        <Cart 
+          cart={cart}
+          tableId={tableId}
+          onUpdateCart={handleUpdateCart} 
+          onClose={() => setIsCartOpen(false)}
+          onOrderPlaced={handleOrderSuccess}
+        />
+      )}
       
-      {/* The menu grid now uses the filtered list of items */}
-      <div className="menu-grid">
-        {filteredMenuItems.map((item) => {
+      <header className="menu-header">
+        <Image src="/logo.png" alt="Restaurant Logo" width={120} height={40} />
+        <div className="cart-icon" onClick={() => setIsCartOpen(true)}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="#111111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="#111111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="#111111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+        </div>
+      </header>
+      
+      <nav className="category-nav">
+        <div className="category-chips">
+          {categories.map(category => (<button key={category} className={`chip ${selectedCategory === category ? 'active' : ''}`} onClick={() => setSelectedCategory(category)}>{category}</button>))}
+        </div>
+      </nav>
+
+      <main className="menu-list">
+        {filteredMenuItems.map(item => {
           const quantity = getItemQuantity(item.id);
           return (
-            <div key={item.id} className="menu-card">
-              <h2>{item.name}</h2>
-              <p className="description">{item.description}</p>
-              <div className="card-footer">
-                <p className="price">₹{item.price}</p>
-                {quantity === 0 ? (
-                  <button onClick={() => handleUpdateCart(item, 'add')}>Add</button>
-                ) : (
-                  <div className="quantity-adjuster">
-                    <button onClick={() => handleUpdateCart(item, 'remove')}>-</button>
-                    <span>{quantity}</span>
-                    <button onClick={() => handleUpdateCart(item, 'add')}>+</button>
-                  </div>
-                )}
+            <div key={item.id} className="new-menu-card">
+              <div className="card-details">
+                <h3 className="card-name">{item.name}</h3>
+                <p className="card-description">{item.description}</p>
+                <p className="card-price">₹{item.price}</p>
+              </div>
+              <div className="card-action">
+                {quantity === 0 ? (<button className="add-button" onClick={() => handleUpdateCart(item, 'add')}>+ Add</button>) : (<div className="new-quantity-adjuster"><button onClick={() => handleUpdateCart(item, 'remove')}>-</button><span>{quantity}</span><button onClick={() => handleUpdateCart(item, 'add')}>+</button></div>)}
               </div>
             </div>
           );
         })}
-      </div>
-    </main>
+      </main>
+
+      {totalItems > 0 && (<div className="floating-cta" onClick={() => setIsCartOpen(true)}>View Order ({totalItems} items • ₹{totalPrice})</div>)}
+    </div>
   );
 }
