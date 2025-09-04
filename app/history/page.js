@@ -4,7 +4,6 @@ import { createClient } from '../../lib/supabaseClient';
 import Link from 'next/link';
 
 export default function HistoryPage() {
-  // ... (code for the history page)
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -32,14 +31,16 @@ export default function HistoryPage() {
     };
 
     fetchHistory();
-  }, []);
+    // FIX: Added 'supabase' to the dependency array
+  }, [supabase]); 
 
   return (
     <div className="app-container">
       <h1 className="history-title">My Recent Orders</h1>
       {loading && <p>Loading history...</p>}
       {!loading && orders.length === 0 && (
-        <p>You haven't placed any orders from this device yet.</p>
+        // FIX: Changed haven't to haven&apos;t
+        <p>You haven&apos;t placed any orders from this device yet.</p>
       )}
       {!loading && orders.length > 0 && (
         <div className="history-list">

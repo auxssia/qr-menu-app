@@ -780,3 +780,69 @@
 .reports-link-btn:hover {
   opacity: 0.9;
 }
+/* This file styles everything EXCEPT the landing page. */
+
+/* === Universal App Container === */
+.app-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.dashboard-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* === Login Page Styles === */
+.login-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding: 1.5rem;
+}
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+.login-form h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+}
+.input-group {
+  margin-bottom: 1.5rem;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #2c5282;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
