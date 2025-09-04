@@ -1,0 +1,117 @@
+/* === Admin Page Layout Styles (Restored) === */
+.admin-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* The two-column layout */
+.admin-content {
+  display: grid;
+  grid-template-columns: 1fr; /* Default to single column on mobile */
+  gap: 40px;
+}
+
+/* On wider screens, switch to two columns */
+@media (min-width: 768px) {
+  .admin-content {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* The form on the left */
+.add-item-form h2, .item-list h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.add-item-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add-item-form input, .add-item-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.add-item-form button {
+  padding: 12px;
+  background-color: #2f855a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* The list of items on the right */
+.admin-item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #e2e8f0;
+}
+
+.item-details {
+  flex-grow: 1;
+}
+.item-details strong {
+    font-size: 1.1rem;
+}
+.item-details p {
+  margin: 4px 0 0 0;
+  color: #555;
+}
+
+.item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn {
+  padding: 8px 12px;
+  background-color: #2b6cb0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  padding: 8px 12px;
+  background-color: #c53030;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+.form-buttons button {
+  flex-grow: 1;
+}
+.cancel-btn {
+  background-color: #718096;
+}
+.category-title-admin {
+    font-size: 1.25rem;
+    color: #4A5568;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+}

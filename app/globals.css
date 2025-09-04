@@ -1,0 +1,23 @@
+:root {
+  --background-color: #FAFAFA;
+  --text-primary: #111111;
+  --text-secondary: #666666;
+  --accent-color: #FF6B6B; /* Coral */
+  --border-color: #EAEAEA;
+  --card-background: #FFFFFF;
+  --border-radius: 16px;
+  --shadow: 0px 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #FFFFFF;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
