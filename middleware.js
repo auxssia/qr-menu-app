@@ -1,25 +1,25 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
 export const runtime = 'nodejs';
 
 export async function middleware(req) {
   const res = NextResponse.next()
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
-        get(name) {
-          return req.cookies.get(name)?.value
-        },
+        get: (name) => req.cookies.get(name)?.value,
+        set: (name, value, options) => res.cookies.set({ name, value, ...options }),
+        remove: (name, options) => res.cookies.set({ name, value: '', ...options }),
       },
     }
   )
 
   const { data: { session } } = await supabase.auth.getSession()
 
-  // If the user is not logged in, redirect them to the login page
   if (!session) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
@@ -27,11 +27,9 @@ export async function middleware(req) {
   return res
 }
 
-// This config ensures the middleware runs ONLY on the specified paths
 export const config = {
   matcher: [
-    '/dashboard', // Protect the new unified dashboard
-    '/admin',     // Keep the old admin page protected for now
-    '/kitchen',   // Keep the old kitchen page protected for now
+    '/dashboard/:path*', // Protects /dashboard and any sub-pages like /dashboard/reports
+    '/admin',
   ],
 }

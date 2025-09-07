@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '../../lib/supabaseClient';
+import { createClient } from '@/lib/supabase/utils';
 
 export default function WaiterDashboard({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);
