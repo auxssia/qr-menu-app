@@ -1,65 +1,41 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { createClient } from '../../lib/supabaseClient';
-import Link from 'next/link';
+import { createServer } from '../../lib/supabase/server';
+import { redirect } from 'next/navigation';
 
-export default function HistoryPage() {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+export const runtime = 'nodejs';
+export const revalidate = 0;
 
-  useEffect(() => {
-    const fetchHistory = async () => {
-      const historyIds = JSON.parse(localStorage.getItem('orderHistory')) || [];
-      if (historyIds.length === 0) {
-        setLoading(false);
-        return;
-      }
+export default async function HistoryPage() {
+  const supabase = createServer();
 
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`*, tables(table_number)`)
-        .in('id', historyIds)
-        .order('created_at', { ascending: false });
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    redirect('/login');
+  }
 
-      if (error) {
-        console.error('Error fetching history:', error);
-      } else {
-        setOrders(data);
-      }
-      setLoading(false);
-    };
-
-    fetchHistory();
-    // FIX: Added 'supabase' to the dependency array
-  }, [supabase]); 
+  // Fetch all PAID orders for the user's restaurant
+  const { data: orders } = await supabase
+    .from('orders')
+    .select(`*, tables(table_number)`)
+    .eq('payment_status', 'paid')
+    .order('created_at', { ascending: false });
 
   return (
     <div className="app-container">
-      <h1 className="history-title">My Recent Orders</h1>
-      {loading && <p>Loading history...</p>}
-      {!loading && orders.length === 0 && (
-        // FIX: Changed haven't to haven&apos;t
-        <p>You haven&apos;t placed any orders from this device yet.</p>
-      )}
-      {!loading && orders.length > 0 && (
-        <div className="history-list">
-          {orders.map(order => (
-            <Link href={`/order/${order.id}`} key={order.id} className="history-card">
-              <div>
-                <p><strong>Table #{order.tables.table_number}</strong></p>
-                <p className="history-date">
-                  {new Date(order.created_at).toLocaleString()}
-                </p>
-              </div>
-              <div className="history-status">
-                <span>{order.status}</span>
-                <span>&rarr;</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+      <h1 className="dashboard-title">Order History</h1>
+      <div className="history-list">
+        {orders && orders.length > 0 ? (
+          orders.map(order => (
+            <div key={order.id} className="history-card">
+              <span>Order #{order.id}</span>
+              <span>Table #{order.tables.table_number}</span>
+              <span>{new Date(order.created_at).toLocaleString()}</span>
+              <span className="status-badge status-paid">{order.payment_status}</span>
+            </div>
+          ))
+        ) : (
+          <p>No completed orders found.</p>
+        )}
+      </div>
     </div>
   );
 }
