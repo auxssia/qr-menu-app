@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/utils';
+import { createClient } from '../../lib/supabase/client';
 
 export default function ChefDashboard({ initialOrders }) {
   const [orders, setOrders] = useState(initialOrders);

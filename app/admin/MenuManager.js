@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '../../lib/supabaseClient';
+// Correcting the typo from 'utlis.js' to 'utils.js'
+import supabase from '../../lib/supabase/utils.js';
 
 export default function MenuManager({ initialItems }) {
+    // ... the rest of your component code is the same
+    // No other changes are needed in this file
   const [menuItems, setMenuItems] = useState(initialItems);
   const [formState, setFormState] = useState({ name: '', price: '', description: '', category: 'Appetizers' });
   const [editingItem, setEditingItem] = useState(null);
-  const supabase = createClient();
 
-  // Group items by category for display
   const groupedItems = menuItems.reduce((acc, item) => {
     const category = item.category || 'Other';
     if (!acc[category]) {
@@ -19,7 +20,6 @@ export default function MenuManager({ initialItems }) {
     return acc;
   }, {});
 
-  // ... (All other functions like handleInputChange, handleSubmit, etc., remain exactly the same)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormState(prev => ({ ...prev, [name]: value }));
@@ -84,7 +84,6 @@ export default function MenuManager({ initialItems }) {
       <div className="add-item-form">
         <h2>{editingItem ? 'Edit Item' : 'Add New Item'}</h2>
         <form onSubmit={handleSubmit}>
-          {/* ... (form inputs are the same) */}
           <input name="name" value={formState.name} onChange={handleInputChange} placeholder="Item Name" required />
           <input name="price" value={formState.price} onChange={handleInputChange} placeholder="Price" type="number" step="0.01" required />
           <input name="description" value={formState.description} onChange={handleInputChange} placeholder="Description" />
@@ -103,7 +102,6 @@ export default function MenuManager({ initialItems }) {
 
       <div className="item-list">
         <h2>Existing Items</h2>
-        {/* New rendering logic for grouped items */}
         {Object.keys(groupedItems).map(category => (
           <div key={category} className="category-section">
             <h3 className="category-title-admin">{category}</h3>

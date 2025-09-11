@@ -1,26 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '../../lib/supabaseClient';
+import { createClient } from '../../lib/supabase/client'; // Use the new client-side utility
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
   const supabase = createClient();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setMessage('Logging in...');
+
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
     });
 
     if (error) {
-      alert(error.message);
+      setMessage(`Login failed: ${error.message}`);
       return;
     }
-
-    // This forces a full reload to the correct dashboard URL
+    
+    // On successful login, redirect to the main dashboard.
+    // Using window.location.href ensures a full page reload,
+    // which helps the server recognize the new session immediately.
     window.location.href = '/dashboard'; 
   };
 
@@ -37,6 +42,7 @@ export default function LoginPage() {
           <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
         <button type="submit" className="login-button">Login</button>
+        {message && <p className="login-message">{message}</p>}
       </form>
     </div>
   );
