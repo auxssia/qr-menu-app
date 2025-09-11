@@ -3,16 +3,17 @@
 import React from 'react';
 import Link from 'next/link';
 
+// This is a simple placeholder component for the Manager.
 const ManagerDashboard = ({ initialOrders }) => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Manager Dashboard</h1>
+        {/* The link to the reports page, using &apos; for the apostrophe */}
         <Link href="/dashboard/reports" className="button-primary">
-          View Today's Sales Report
+          View Today&apos;s Sales Report
         </Link>
       </div>
-
       <div className="active-orders-section">
         <h2>Current Active Orders ({initialOrders.length})</h2>
         {initialOrders.length > 0 ? (
